@@ -4,6 +4,7 @@ from security import hash_password ,verify_password
 import pandas as pd
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from password_email import password
 import smtplib
 # Ticket System Application
 # This application allows users to create, view, and update tickets.
@@ -18,7 +19,7 @@ def send_email(to_email,subject, message):
     query='''
     SELECT * FROM Users WHERE Username=?'''
     sender_email = "taskmangment62@gmail.com"  
-    sender_password = "xeqd jjcg fmnx vmug"  
+    sender_password = password()
     #to_email='yossifhendy32@gmail.com'
     msg = MIMEMultipart()
     msg['From'] = sender_email
@@ -122,6 +123,9 @@ def main_application():
                 if st.button('Update Status'):
                     if ticket_id and new_status:
                         update_ticket_status(ticket_id, new_status)
+                        sub=f'update status'
+                        mess=f'i am {username}\n\n, ticket with ID {ticket_id} has been updated to {new_status}'
+                        send_email('ahmed.abdellatif@almada-eg.com',sub,mess)
                         st.success(f'Ticket {ticket_id} status updated to {new_status} ✅')
                     else:
                         st.error('Please provide Ticket ID and New Status ❌')
